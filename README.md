@@ -13,9 +13,9 @@ The model need to be **explainable**, and highlight the more **informative featu
     * Analyzing the features and their relationships
     * Features engineering
 3. **The third part - Modeld** 
-    * Applying the Random Forest model
-    * Applying the Random Forest model after finding the best parameter
-    * Applying Logistic Regression model which developed from scratch
+    * Random Forest model
+    * Random Forest model after finding the best parameter
+    * Logistic Regression model which developed from scratch
 
 ### Running the model
 In order to view the project and run the code use the [Notebook](https://github.com/NadavElyakim27/titanic_EDA/blob/main/notebook.ipynb) on jupyter or googlecolab
