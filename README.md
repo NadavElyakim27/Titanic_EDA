@@ -12,10 +12,10 @@ The model need to be **explainable**, and highlight the more **informative featu
     * Load and clean the data set
     * Analyzing the features and their relationships
     * Features engineering
-3. **Modeldד** 
+3. **Modelds** 
     * Random Forest model
-    * Random Forest model after finding the best parameter
-    * Logistic Regression model which developed from scratch
+    * Random Forest model - tune hyperparameter
+    * Logistic Regression - model which developed from scratch (OOP)
 
 ### Running the model
 In order to view the project and run the code use the [Notebook](https://github.com/NadavElyakim27/titanic_EDA/blob/main/notebook.ipynb) on jupyter or googlecolab
