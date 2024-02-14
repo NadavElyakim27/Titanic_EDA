@@ -4,7 +4,7 @@ Nadav Elyakim
 <img src="./img/Titanic.jpg" alt="Alt text">
 
 ## Introduction
-In this repo I will present EDA for Titanic [Titanic dataset](https://www.kaggle.com/datasets/yasserh/titanic-dataset) and create a classifier to predict who will survive and who will not.\
+In this repo I will present EDA for [Titanic dataset](https://www.kaggle.com/datasets/yasserh/titanic-dataset) and create a classifier to predict who will survive and who will not.\
 The model need to be **explainable**, and highlight the more **informative features**.
 
 1. **The first part** - Imports & Installations & confige
