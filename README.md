@@ -12,13 +12,23 @@ The model need to be **explainable**, and highlight the more **informative featu
     * Load and clean the data set
     * Analyzing the features and their relationships
     * Features engineering
-3. **The third part -** 
+3. **The third part - Modeld** 
     * Applying the Random Forest model
     * Applying the Random Forest model after finding the best parameter
     * Applying Logistic Regression model which developed from scratch
 
 ### Running the model
 In order to view the project and run the code use the [Notebook](https://github.com/NadavElyakim27/titanic_EDA/blob/main/notebook.ipynb) on jupyter or googlecolab
+
+
+### Note
+
+To my best understanding, the main purpose of the exercise is to assess my **coding skills** and handling of Exploratory Data Analysis (**EDA**):
+1. I tried to be as original as possible and not rely on numerous examples available on the internet (even there are sophisticated things online but not authentic).
+2. I emphasized code quality - documentation, readable, and usable.
+3. I demonstrated the usage of python modules.
+4. I illustrated the use of popular data science libraries - numpy, pandas, matplotlib, seaborn, sklearn.
+5. I demonstrated  a simple model develop from scratch while utilizing Object-Oriented Programming (OOP).
 
 ## Thanks
 
