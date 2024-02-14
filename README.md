@@ -7,10 +7,10 @@ Nadav Elyakim
 In this repo I will present EDA for [Titanic dataset](https://www.kaggle.com/datasets/yasserh/titanic-dataset) and create a classifier to predict who will survive and who will not.\
 The model need to be **explainable**, and highlight the more **informative features**.
 
-1. **Imports & Installations & confige**
+1. **Imports & Installations & Configuration**
 2. **EDA** 
-    * Load and clean the data set
-    * Analyzing the features and their relationships
+    * Load and clean the dataset
+    * Analyzing the features and their relationships (correlations)
     * Features engineering
 3. **Modelds** 
     * Random Forest model
