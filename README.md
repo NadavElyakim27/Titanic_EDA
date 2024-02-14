@@ -17,10 +17,8 @@ The model need to be **explainable**, and highlight the more **informative featu
     * Applying the Random Forest model after finding the best parameter
     * Applying Logistic Regression model which developed from scratch
 
-## Running the model
-In order to view the project and run the code the
-## [Notebook](https://github.com/ok123123123/Multi_Dim_CP_Detection/blob/main/EMULLR.ipynb) on jupyter or googlecolab
-> 
+### Running the model
+In order to view the project and run the code use the [Notebook](https://github.com/ok123123123/Multi_Dim_CP_Detection/blob/main/EMULLR.ipynb) on jupyter or googlecolab
 
 ## Thanks
 
