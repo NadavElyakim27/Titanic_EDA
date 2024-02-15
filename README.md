@@ -4,7 +4,6 @@ Nadav Elyakim
 <img src="./img/Titanic.jpg" alt="Alt text">
 
 ## Introduction
-'''
 In this repo I will present EDA for [Titanic dataset](https://www.kaggle.com/datasets/yasserh/titanic-dataset) and create a classifier to predict who will survive and who will not.\
 The model need to be **explainable**, and highlight the more **informative features**.
 
@@ -19,11 +18,9 @@ The model need to be **explainable**, and highlight the more **informative featu
     * Logistic Regression - model which developed from scratch (OOP)
 
 ### Running the model
-'''
 In order to view the project and run the code use the [Notebook](https://github.com/NadavElyakim27/titanic_EDA/blob/main/notebook.ipynb) on jupyter or googlecolab
 
 ### Note
-'''
 To my best understanding, the main purpose of the exercise is to assess my **coding skills** and handling of Exploratory Data Analysis (**EDA**):
 1. I tried to be as **original** as possible and not rely on numerous examples available on the internet (even there are sophisticated things online but not authentic).
 2. I emphasized code **quality** - documentation, readable, and usable.
