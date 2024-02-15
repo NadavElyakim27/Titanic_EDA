@@ -1,30 +1,71 @@
 """
 LogisticRegression Model
-
 This module contains the implementation of a LogisticRegression model for classification.
+In this module, I demonstrated the use of OOP - classes and inheritance.
 """
 
+import abc
 import numpy as np
 import matplotlib.pyplot as plt
 from src.evaluation import accuracy_clac
 
-class LogisticRegression:
-    """
-    Logistic Regression implementation from scratch.
-    """
 
+def sigmoid(z):
+    """
+    Apply the sigmoid.
+    Args:
+        z: Input values
+    Returns:
+        array: sigmoid function calculation
+    """
+    return 1 / (1 + np.exp(-z))
+
+
+class ClassifierLoss(abc.ABC):
+    """
+    Represents a loss function of a classifier.
+    """
+    def __call__(self, *args, **kwargs):
+        return self.loss(*args, **kwargs)
+
+    @abc.abstractmethod
+    def loss(self, *args, **kw):
+        pass
+
+class MybBinaryCrossEntropy(ClassifierLoss):
+    """
+    BinaryCrossEntropy loss 
+    """
+    def __init__(self):
+        self.epsilon = 1e-9
+
+    def loss(self, y_true, y_pred):
+        """
+        Calculates the Binary-Cross-Entropy-loss
+        Args:
+            y_true: true label
+            y_pred: predicted probabilities
+        Returns:
+            loss: binary cross entropy
+        """        
+        y1 = y_true * np.log(y_pred + self.epsilon)
+        y2 = (1-y_true) * np.log(1 - y_pred + self.epsilon)
+        loss = -np.mean(y1 + y2)
+
+        return loss
+class Classifier():
+    """
+    Represents a Classifier model.
+    """
     def __init__(self,
-                  data: dict = None,
-                  learning_rate: float=0.01,
-                  n_iterations: int=1000,
-                  regularization: str='l2',
-                  lambda_reg: float=0.01
+                data: dict = None,
+                loss_fn: ClassifierLoss = MybBinaryCrossEntropy()
                 ):
         """
-        Initializion.
+        Initializes the Classifier model.
         Args:
-            learning_rate: learning rate of gradient descent
-            n_iterations (int): max iterations for gradient descent
+            data: dict of all data (X_train, X_test, y_train, y_test)
+            loss_fn: the loss function
         """
         # Data
         self.data = data
@@ -32,43 +73,42 @@ class LogisticRegression:
         self.X_test = data['X_test']
         self.y_train = data['y_train']
         self.y_test = data['y_test']
-        # Param
+        # Loss
+        self.loss_fn =loss_fn
+
+class LogisticRegression(Classifier):
+    """
+    Logistic Regression implementation from scratch.
+    """
+    def __init__(self,
+                  data: dict = None,
+                  loss_fn: ClassifierLoss = MybBinaryCrossEntropy(),
+                  learning_rate: float=0.01,
+                  n_iterations: int=1000,
+                  regularization: str='l2',
+                  lambda_reg: float=0.01
+                ):
+        """
+        Initializes the Logistic Regression classifier.
+        Args:
+            data: dict of all data (X_train, X_test, y_train, y_test)
+            loss_fn: the loss function
+            learning_rate: learning rate of gradient descent
+            n_iterations: (int): max iterations for gradient descent
+            regularization: 'l1' for (Lasso) 'l2' for Ridge
+            lambda_reg: regularization hyperparameter
+        """
+        super().__init__(data, loss_fn)
+
         self.learning_rate = learning_rate
         self.n_iterations = n_iterations
         self.regularization = regularization
         self.lambda_reg = lambda_reg
-        self.weights = None
-        self.bias = None
+        self.weights = np.zeros(self.X_train.shape[1])
+        self.bias = 0
         self.feature_importances_ = None
     
-    def sigmoid(self, z):
-        """
-        Apply the sigmoid.
-        Args:
-            z: Input values
-        Returns:
-            array: sigmoid function calculation
-        """
 
-        return 1 / (1 + np.exp(-z))
-    
-    def loss_clac(self, y_true, y_pred):
-        """
-        Compute binary cross entropy loss
-        Args:
-            y_true: true label
-            y_pred: predicted probabilities
-        Returns:
-            loss: binary cross entropy
-        """        
-
-        epsilon = 1e-9
-        y1 = y_true * np.log(y_pred + epsilon)
-        y2 = (1-y_true) * np.log(1 - y_pred + epsilon)
-        loss = -np.mean(y1 + y2)
-        
-        return loss
-        
     def fit(self, plot: bool = False):
         """
         Fit the logistic regression model to the training data
@@ -81,29 +121,21 @@ class LogisticRegression:
         train_acc = []
         test_acc = []
 
-        # Initialize weights and bias
-        self.weights = np.zeros(self.X_train.shape[1])
-        self.bias = 0
-
         for _ in range(self.n_iterations):
-            # Calculate X*T + b
-            z = np.dot(self.X_train, self.weights) + self.bias
-
-            # Apply sigmoid function to get probabilities
-            y_perd = self.sigmoid(z)
 
             # Predict for accuracy
-            y_train_pred = self.predict(self.X_train)
-            y_pred_test = self.predict(self.X_test)
+            y_pred_train, logits = self.predict(self.X_train)
+            y_pred_test, _ = self.predict(self.X_test)
+
             # A losses and accuracy to memory lists
-            train_losses.append(self.loss_clac(self.y_train, y_perd))
-            test_losses.append(self.loss_clac(self.y_test, y_pred_test))
-            train_acc.append(accuracy_clac(self.y_train, y_train_pred))
+            train_losses.append(self.loss_fn.loss(self.y_train, logits))
+            test_losses.append(self.loss_fn.loss(self.y_test, y_pred_test))
+            train_acc.append(accuracy_clac(self.y_train, y_pred_train))
             test_acc.append(accuracy_clac(self.y_test, y_pred_test))
 
             # Gradient
-            dw = np.dot(self.X_train.T, (y_perd - self.y_train)) / len(self.y_train)
-            db = np.sum(y_perd - self.y_train) / len(self.y_train)
+            dw = np.dot(self.X_train.T, (logits - self.y_train)) / len(self.y_train)
+            db = np.sum(logits - self.y_train) / len(self.y_train)
 
             # Update weights and bias using gradient descent
             self.weights -= self.learning_rate * dw
@@ -130,7 +162,7 @@ class LogisticRegression:
         z = np.dot(X, self.weights) + self.bias
 
         # Apply sigmoid function to get probabilities
-        predictions = self.sigmoid(z)
+        predictions = sigmoid(z)
 
         # Convert probabilities to binary predictions
         y_perd = np.round(predictions).astype(int)
@@ -141,7 +173,7 @@ class LogisticRegression:
         elif self.regularization == 'l2':
             self.weights -= 2 * self.lambda_reg * self.weights
 
-        return y_perd
+        return y_perd, predictions
     
 
 def plot_losses_accuracy(losses, accuracy):
@@ -151,7 +183,7 @@ def plot_losses_accuracy(losses, accuracy):
         losses: taple - train loss, test loss
         accuracy: taple - accuracy loss, accuracy loss
     Returns:
-        plot
+        show plot
     """
     fig, axs = plt.subplots(2, 2, figsize = (14,12))
 
