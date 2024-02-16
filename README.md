@@ -30,5 +30,4 @@ To my best understanding, the main purpose of the exercise is to assess my **cod
 4. I illustrated the use of popular **data science libraries** - numpy, pandas, matplotlib, seaborn, sklearn.
 5. I demonstrated  a simple model develop from scratch while utilizing **Object-Oriented Programming** (OOP).
 
-## Thanks
-![Visitors](https://api.visitorbadge.io/api/visitors?path=https%3A%2F%2Fgithub.com%2FNadavElyakim27%2FTitanic_EDA.git&labelColor=%232ccce4&countColor=%23555555&style=flat)
+### Thanks
