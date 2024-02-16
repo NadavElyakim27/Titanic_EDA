@@ -13,9 +13,9 @@ The model need to be **explainable**, and highlight the more **informative featu
     * Analyzing the features and their relationships (correlations)
     * Features engineering
 3. **Modelds** 
-    * Random Forest model
-    * Random Forest model - tune hyperparameter
-    * Logistic Regression - model which developed from scratch (OOP)
+    * Random Forest model (77% accuracy)
+    * Random Forest model - tune hyperparameter (**82% accuracy**) 
+    * Logistic Regression - model which developed from scratch (OOP) (68% accuracy)
 
 ### Running the model
 In order to view the project and run the code use the [Notebook](https://github.com/NadavElyakim27/titanic_EDA/blob/main/notebook.ipynb) on jupyter or googlecolab
