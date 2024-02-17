@@ -10,21 +10,12 @@ import matplotlib.pyplot as plt
 from src.evaluation import accuracy_clac
 
 
-def sigmoid(z):
-    """
-    Apply the sigmoid.
-    Args:
-        z: Input values
-    Returns:
-        array: sigmoid function calculation
-    """
-    return 1 / (1 + np.exp(-z))
-
-
 class ClassifierLoss(abc.ABC):
     """
     Represents a loss function of a classifier.
+    Just to demonstrate inheritance and OOP.
     """
+
     def __call__(self, *args, **kwargs):
         return self.loss(*args, **kwargs)
 
@@ -32,10 +23,12 @@ class ClassifierLoss(abc.ABC):
     def loss(self, *args, **kw):
         pass
 
+
 class MybBinaryCrossEntropy(ClassifierLoss):
     """
-    BinaryCrossEntropy loss 
+    BinaryCrossEntropy loss
     """
+
     def __init__(self):
         self.epsilon = 1e-9
 
@@ -47,20 +40,23 @@ class MybBinaryCrossEntropy(ClassifierLoss):
             y_pred: predicted probabilities
         Returns:
             loss: binary cross entropy
-        """        
+        """
         y1 = y_true * np.log(y_pred + self.epsilon)
-        y2 = (1-y_true) * np.log(1 - y_pred + self.epsilon)
+        y2 = (1 - y_true) * np.log(1 - y_pred + self.epsilon)
         loss = -np.mean(y1 + y2)
 
         return loss
-class Classifier():
+
+
+class Classifier:
     """
     Represents a Classifier model.
+    Just to demonstrate inheritance and OOP.
     """
-    def __init__(self,
-                data: dict = None,
-                loss_fn: ClassifierLoss = MybBinaryCrossEntropy()
-                ):
+
+    def __init__(
+        self, data: dict = None, loss_fn: ClassifierLoss = MybBinaryCrossEntropy()
+    ):
         """
         Initializes the Classifier model.
         Args:
@@ -69,25 +65,28 @@ class Classifier():
         """
         # Data
         self.data = data
-        self.X_train = data['X_train']
-        self.X_test = data['X_test']
-        self.y_train = data['y_train']
-        self.y_test = data['y_test']
+        self.X_train = data["X_train"].astype(float)
+        self.X_test = data["X_test"].astype(float)
+        self.y_train = data["y_train"].astype(float)
+        self.y_test = data["y_test"].astype(float)
         # Loss
-        self.loss_fn =loss_fn
+        self.loss_fn = loss_fn
+
 
 class LogisticRegression(Classifier):
     """
     Logistic Regression implementation from scratch.
     """
-    def __init__(self,
-                  data: dict = None,
-                  loss_fn: ClassifierLoss = MybBinaryCrossEntropy(),
-                  learning_rate: float=0.01,
-                  n_iterations: int=1000,
-                  regularization: str='l2',
-                  lambda_reg: float=0.01
-                ):
+
+    def __init__(
+        self,
+        data: dict = None,
+        loss_fn: ClassifierLoss = MybBinaryCrossEntropy(),
+        learning_rate: float = 0.01,
+        n_iterations: int = 1000,
+        regularization: str = "l2",
+        lambda_reg: float = 0.01,
+    ):
         """
         Initializes the Logistic Regression classifier.
         Args:
@@ -107,7 +106,6 @@ class LogisticRegression(Classifier):
         self.weights = np.zeros(self.X_train.shape[1])
         self.bias = 0
         self.feature_importances_ = None
-    
 
     def fit(self, plot: bool = False):
         """
@@ -142,24 +140,25 @@ class LogisticRegression(Classifier):
             self.bias -= self.learning_rate * db
 
         # Save feature importances
-        self.feature_importances_ =  np.abs(self.weights)
+        self.feature_importances_ = np.abs(self.weights)
 
         # Plot if need
-        if plot: plot_losses_accuracy((train_losses, test_losses), (train_acc,test_acc))
+        if plot:
+            plot_losses_accuracy((train_losses, test_losses), (train_acc, test_acc))
 
         return (train_losses, test_losses)
-    
+
     def predict(self, X):
         """
         Predict binary labels for the input data.
         Args:
             X: array-like of shape (n_samples, n_features)
-        Returns:
+        Returns:s
             y_perd: Array of predicted binary labels
         """
-        
+
         # Calculate X*T + b
-        z = np.dot(X, self.weights) + self.bias
+        z = (np.dot(X, self.weights) + self.bias).astype(float)
 
         # Apply sigmoid function to get probabilities
         predictions = sigmoid(z)
@@ -168,13 +167,13 @@ class LogisticRegression(Classifier):
         y_perd = np.round(predictions).astype(int)
 
         # Apply regularization
-        if self.regularization == 'l1':
+        if self.regularization == "l1":
             self.weights -= self.lambda_reg * np.sign(self.weights)
-        elif self.regularization == 'l2':
+        elif self.regularization == "l2":
             self.weights -= 2 * self.lambda_reg * self.weights
 
         return y_perd, predictions
-    
+
 
 def plot_losses_accuracy(losses, accuracy):
     """
@@ -185,26 +184,37 @@ def plot_losses_accuracy(losses, accuracy):
     Returns:
         show plot
     """
-    fig, axs = plt.subplots(2, 2, figsize = (14,12))
+    fig, axs = plt.subplots(2, 2, figsize=(14, 12))
 
     # Train loss plot
-    axs[0][0].plot(losses[0], label='Training Loss')
-    axs[0][0].set_xlabel('Epochs')
-    axs[0][0].set_ylabel('Loss')
-    axs[0][0].set_title('Training Loss over Epochs')
+    axs[0][0].plot(losses[0], label="Training Loss")
+    axs[0][0].set_xlabel("Epochs")
+    axs[0][0].set_ylabel("Loss")
+    axs[0][0].set_title("Training Loss over Epochs")
     # Test loss plot
-    axs[0][1].plot(losses[1], label='Test Loss')
-    axs[0][1].set_xlabel('Epochs')
-    axs[0][1].set_title('Test Loss over Epochs')
+    axs[0][1].plot(losses[1], label="Test Loss")
+    axs[0][1].set_xlabel("Epochs")
+    axs[0][1].set_title("Test Loss over Epochs")
 
     # Train accuracy plot
-    axs[1][0].plot(accuracy[0], label='Training accuracy')
-    axs[1][0].set_xlabel('Epochs')
-    axs[1][0].set_ylabel('accuracy')
-    axs[1][0].set_title('Training accuracy over Epochs')
+    axs[1][0].plot(accuracy[0], label="Training accuracy")
+    axs[1][0].set_xlabel("Epochs")
+    axs[1][0].set_ylabel("accuracy")
+    axs[1][0].set_title("Training accuracy over Epochs")
     # Test accuracy plot
-    axs[1][1].plot(accuracy[1], label='Test accuracy')
-    axs[1][1].set_xlabel('Epochs')
-    axs[1][1].set_title('Test accuracy over Epochs')
+    axs[1][1].plot(accuracy[1], label="Test accuracy")
+    axs[1][1].set_xlabel("Epochs")
+    axs[1][1].set_title("Test accuracy over Epochs")
 
     plt.show()
+
+
+def sigmoid(z):
+    """
+    Apply the sigmoid.
+    Args:
+        z: Input values
+    Returns:
+        array: sigmoid function calculation
+    """
+    return 1 / (1 + np.exp(-z))
